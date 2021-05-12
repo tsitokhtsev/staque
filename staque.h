@@ -28,8 +28,10 @@ class Staque {
             return;
         }
 
-        this->front = new (nothrow) Node(obj.front->data);
+        /* Adding first node */
+        this->front = this->end = new (nothrow) Node(obj.front->data);
 
+        /* Adding remainig nodes */
         Node *this_curr = this->front, *obj_curr = obj.front->next;
         while (obj_curr != nullptr) {
             this_curr->next = new (nothrow) Node(obj_curr->data);
@@ -62,7 +64,7 @@ class Staque {
 
     int get_end() const { return end->data; }
 
-    /* print() - displays staque */
+    /* print() - prints out staque */
     void print() const {
         if (empty()) {
             cout << "*** Staque is empty ***\n\n";
@@ -86,15 +88,20 @@ class Staque {
             return;
         }
 
-        if (size == 0) {  // If staque is empty
+        /* If staque is empty */
+        if (size == 0) {
             front = end = new_node;
             cout << val << " was added to staque...\n";
-        } else if (val % 2 == 0) {  // If new value is even
+        }
+        /* If new value is even */
+        else if (val % 2 == 0) {
             new_node->next = front;
             front->prev = new_node;
             front = new_node;
             cout << val << " was added to the front of staque...\n";
-        } else {  // If new value is odd
+        }
+        /* If new value is odd */
+        else {
             new_node->prev = end;
             end->next = new_node;
             end = new_node;
@@ -105,59 +112,69 @@ class Staque {
         print();
     }
 
-    /* pop_front() - removes one or more numbers from the front of queue */
+    /* pop_front() - removes one or more numbers from the front of staque */
     void pop_front(const int quant = 1) {
-        int i;
-        for (i = 0; i < quant; i++) {
-            if (empty()) {
-                cout << "*** Staque is empty ***\n\n";
-                return;
-            }
-
-            if (i != 0) {
-                cout << ", ";
-            }
-            cout << front->data;
-
-            Node* curr = front;
-            front = front->next;
-            front->prev = nullptr;
-            delete curr;
-			if (front == nullptr){
-				end = nullptr;
-				break;
-			}
-            size--;
+        if (empty()) {
+            cout << "Can't remove numbers...\n"
+                 << "*** Staque is empty ***\n\n";
+            return;
         }
 
-        i == 1 ? cout << " was deleted from the front of staque...\n"
-               : cout << " were deleted from the front of staque...\n";
+        int i;
+        for (i = 0; i < quant; i++) {
+            if (i != 0) cout << ", ";
+            cout << front->data;
+            size--;
+
+            /* Removing number from the front */
+            Node* curr = front;
+            front = front->next;
+            delete curr;
+
+            /* If there are no numbers left */
+            if (front == nullptr) {
+                end = nullptr;
+                i++;
+                break;
+            }
+
+            /* Removing pointer to deleted number */
+            front->prev = nullptr;
+        }
+
+        i == 1 ? cout << " was removed from the front of staque...\n"
+               : cout << " were removed from the front of staque...\n";
         print();
     }
 
-    /* pop_end() - removes one or more numbers from the end of queue */
+    /* pop_end() - removes one or more numbers from the end of staque */
     void pop_end(const int quant = 1) {
-        int i = 0;
+        if (empty()) {
+            cout << "Can't remove numbers...\n"
+                 << "*** Staque is empty ***\n\n";
+            return;
+        }
+
+        int i;
         for (i = 0; i < quant; i++) {
-            if (empty()) {
-                cout << "*** Staque is empty ***\n\n";
-                return;
-            }
-
-			if (i != 0) {
-                cout << ", ";
-            }
+            if (i != 0) cout << ", ";
             cout << end->data;
+            size--;
 
+            /* Removing number from the end */
             Node* curr = end;
             end = end->prev;
             delete curr;
+
+            /* If there are no numbers left */
             if (end == nullptr) {
                 front = nullptr;
+                i++;
                 break;
             }
+
+            /* Removing pointer to deleted number */
             end->next = nullptr;
-            size--;
         }
 
         i == 1 ? cout << " was deleted from the end of staque...\n"
@@ -165,67 +182,85 @@ class Staque {
         print();
     }
 
-    /* pop_even() - removes one or more even numbers from queue */
+    /* pop_even() - removes one or more even numbers from staque */
     void pop_even(const int quant = 1) {
-        int i = 0;
-        while (i != quant) {
-            if (empty()) {
-                break;
-            }
-            if (front->data % 2 != 0) {
-                cout << "*** No even numbers left in staque ***\n";
-                break;
-            }
+        if (empty()) {
+            cout << "Can't remove numbers...\n"
+                 << "*** Staque is empty ***\n\n";
+            return;
+        }
 
-            i++;
-            cout << front->data << " was deleted from staque...\n";
-
+        int i;
+        for (i = 0; i < quant; i++) {
+            if (i != 0) cout << ", ";
+            cout << front->data;
             size--;
 
+            /* Removing number from the front */
             Node* curr = front;
             front = front->next;
             delete curr;
+
+            /* If there are no numbers left */
             if (front == nullptr) {
                 end = nullptr;
+                i++;
                 break;
             }
+
+            /* Removing pointer to deleted number */
             front->prev = nullptr;
+
+            /* If there are no even numbers left */
+            if (front->data % 2 != 0) break;
         }
 
+        i == 1 ? cout << " was removed from the front of staque...\n"
+               : cout << " were removed from the front of staque...\n";
+        if (!empty() && front->data % 2 != 0) {
+            cout << "*** No even numbers left in staque ***\n";
+        }
         print();
     }
 
-    /* pop_odd() - removes one or more odd numbers from queue */
+    /* pop_odd() - removes one or more odd numbers from staque */
     void pop_odd(const int quant = 1) {
+        if (empty()) {
+            cout << "Can't remove numbers...\n"
+                 << "*** Staque is empty ***\n\n";
+            return;
+        }
+
         int i;
         for (i = 0; i < quant; i++) {
-            if (empty()) {
-                cout << "*** Staque is empty ***\n\n";
-                return;
-            }
-            if (end->data % 2 == 0) {
-                cout << "*** No odd numbers in staque ***\n\n";
-                return;
-            }
-
-            if (i != 0) {
-                cout << ", ";
-            }
-            cout << front->data << " was deleted from staque...\n";
+            if (i != 0) cout << ", ";
             cout << end->data;
-
             size--;
 
+            /* Removing number from the end */
             Node* curr = end;
             end = end->prev;
             delete curr;
-            if (end == nullptr) { // If 
+
+            /* If there are no numbers left */
+            if (end == nullptr) {
                 front = nullptr;
-                return;
+                i++;
+                break;
             }
+
+            /* Removing pointer to deleted number */
             end->next = nullptr;
+
+            /* If there are no odd numbers left */
+            if (end->data % 2 == 0) break;
         }
 
+        i == 1 ? cout << " was removed from the front of staque...\n"
+               : cout << " were removed from the front of staque...\n";
+        if (!empty() && end->data % 2 == 0) {
+            cout << "*** No odd numbers in staque ***\n";
+        }
         print();
     }
 
