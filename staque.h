@@ -34,7 +34,7 @@ class Staque {
         /* Adding remainig nodes */
         Node *this_curr = this->front, *obj_curr = obj.front->next;
         while (obj_curr != nullptr) {
-            this_curr->next = new (nothrow) Node(obj_curr->data);
+            this_curr->next = new (nothrow) Node(obj_curr->data, obj_curr->next, this_curr);
             this_curr = this_curr->next;
             obj_curr = obj_curr->next;
         }
@@ -212,7 +212,10 @@ class Staque {
             front->prev = nullptr;
 
             /* If there are no even numbers left */
-            if (front->data % 2 != 0) break;
+            if (front->data % 2 != 0) {
+                i++;
+                break;
+            }
         }
 
         i == 1 ? cout << " was removed from the front of staque...\n"
@@ -253,13 +256,16 @@ class Staque {
             end->next = nullptr;
 
             /* If there are no odd numbers left */
-            if (end->data % 2 == 0) break;
+            if (end->data % 2 == 0) {
+                i++;
+                break;
+            }
         }
 
         i == 1 ? cout << " was removed from the front of staque...\n"
                : cout << " were removed from the front of staque...\n";
         if (!empty() && end->data % 2 == 0) {
-            cout << "*** No odd numbers in staque ***\n";
+            cout << "*** No odd numbers left in staque ***\n";
         }
         print();
     }
