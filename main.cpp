@@ -46,18 +46,18 @@ int main() {
          << "Staque S3\n"
          << "--------------------------------------------------\n";
     Staque S3 = S1;
-	S3.push(3);
-	S3.push(20);
-	S3.push(9);
+    S3.push(3);
+    S3.push(20);
+    S3.push(9);
 
-	/* Removing all numbers in S3 */
-	cout << "--------------------------------------------------\n"
+    /* Removing all numbers in S3 */
+    cout << "--------------------------------------------------\n"
          << "> Removing all numbers in S3\n\n";
     S3.pop_end(5);
 
-	/* Removing numbers from empty S3 */
-	cout << "--------------------------------------------------\n"
+    /* Removing numbers from empty S3 */
+    cout << "--------------------------------------------------\n"
          << "> Removing numbers from empty S3\n\n";
     S3.pop_even();
-	cout << "--------------------------------------------------\n";
+    cout << "--------------------------------------------------\n";
 }
